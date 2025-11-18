@@ -25,8 +25,8 @@
                     <a href="#">Comunidad</a>
                 </div>
                 <div class="auth-buttons">
-                    <button class="btn btn-login">Iniciar Sesión</button>
-                    <button class="btn btn-signup">Registrarse</button>
+                    <a href="{{ route('signup') }}" class="btn btn-signup">Registrarse</a>
+                    <a href="{{ route('login') }}" class="btn btn-login">Iniciar Sesión</a>
                 </div>
             </nav>
         </div>
