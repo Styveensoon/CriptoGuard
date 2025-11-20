@@ -29,6 +29,17 @@
 
         <form class="auth-form" id="signup-form" action="{{ route('signup') }}" method="POST">
             @csrf
+            @if ($errors->any())
+    <div class="error-box">
+        <strong>⚠️ Ocurrieron algunos errores:</strong>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>• {{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 
             <!-- Sección 1: Información Personal -->
             <div class="form-section active" id="section-1">

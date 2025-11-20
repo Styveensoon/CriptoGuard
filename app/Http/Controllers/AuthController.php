@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\WelcomeMail;
+use Illuminate\Support\Facades\Mail;
+
 
 class AuthController extends Controller
 {
@@ -30,22 +33,22 @@ class AuthController extends Controller
 
         // Validación de datos
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|min:2|max:255',
-            'paterno' => 'required|string|min:2|max:255',
-            'materno' => 'required|string|min:2|max:255',
-            'birthdate' => 'required|date',
-            'sex' => 'required|in:male,female,other',
-            'email' => 'required|email|unique:users,email',
-            'username' => 'required|string|min:3|max:20|unique:users,username|regex:/^[a-zA-Z0-9_]+$/',
-            'password' => 'required|string|min:8|confirmed',
-            'company' => 'nullable|string|max:255',
-            'role' => 'nullable|string|max:255',
-            'experience' => 'nullable|string|max:255',
-            'specialty' => 'nullable|string|max:255',
-        ], [
-            'username.regex' => 'El nombre de usuario solo puede contener letras, números y guiones bajos.',
-            'password.confirmed' => 'Las contraseñas no coinciden.',
-        ]);
+        'name' => 'required|string|min:2|max:255',
+        'paterno' => 'required|string|min:2|max:255',
+        'materno' => 'required|string|min:2|max:255',
+        'birthdate' => 'required|date_format:d/m/Y',
+        'sex' => 'required|in:male,female,other',
+        'email' => 'required|email|unique:users,email',
+        'username' => 'required|string|min:3|max:20|unique:users,username|regex:/^[a-zA-Z0-9_]+$/',
+        'password' => 'required|string|min:8|confirmed',
+        'company' => 'nullable|string|max:255',
+        'role' => 'nullable|string|max:255',
+        'experience' => 'nullable|string|max:255',
+        'specialty' => 'nullable|string|max:255',
+    ], [
+        'birthdate.date_format' => 'La fecha debe estar en formato DD/MM/AAAA.',
+    ]);
+
 
         // Validar edad manualmente
         if ($birthdate) {
@@ -80,6 +83,10 @@ class AuthController extends Controller
             'specialty' => $request->specialty,
         ]);
 
+        //Envia correo de bienvenida
+        Mail::to($user->email)->send(new WelcomeMail($user));
+
+
         // Iniciar sesión automáticamente
         Auth::login($user);
 
@@ -92,35 +99,39 @@ class AuthController extends Controller
         return view('credentials.login');
     }
 
-    // Procesar login
     public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+{
+    // Validación flexible
+    $request->validate([
+        'email' => 'required',
+        'password' => 'required',
+    ]);
 
-        // Intentar login con email
-        if (Auth::attempt($credentials, $request->filled('remember'))) {
-            $request->session()->regenerate();
-            return redirect()->route('dashboard');
-        }
+    // Intento usando email
+    $emailCredentials = [
+        'email' => $request->email,
+        'password' => $request->password
+    ];
 
-        // Si falla con email, intentar con username
-        $usernameCredentials = [
-            'username' => $request->email, // El usuario podría estar ingresando su username en el campo email
-            'password' => $request->password
-        ];
+    // Intento usando username
+    $usernameCredentials = [
+        'username' => $request->email,
+        'password' => $request->password
+    ];
 
-        if (Auth::attempt($usernameCredentials, $request->filled('remember'))) {
-            $request->session()->regenerate();
-            return redirect()->route('dashboard');
-        }
+    // Ejecutar intentos
+    if (Auth::attempt($emailCredentials, $request->filled('remember')) ||
+        Auth::attempt($usernameCredentials, $request->filled('remember'))) {
 
-        return back()->withErrors([
-            'email' => 'Las credenciales proporcionadas no son válidas.',
-        ])->onlyInput('email');
+        $request->session()->regenerate();
+        return redirect()->route('dashboard');
     }
+
+    return back()->withErrors([
+        'email' => 'Usuario, correo o contraseña incorrectos.',
+    ])->onlyInput('email');
+}
+
 
     // Cerrar sesión
     public function logout(Request $request)

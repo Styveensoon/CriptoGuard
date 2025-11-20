@@ -19,25 +19,35 @@
         <p class="auth-subtitle">Ingresa a tu cuenta para acceder a las alertas</p>
         
         <form action="{{ route('login.post') }}" method="POST">
+    @csrf
 
-            @csrf
-            <div class="form-group">
-                <label for="email">Correo Electrónico</label>
-                <input type="email" id="email" name="email" class="form-control" placeholder="tu.correo@ejemplo.com" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                <div class="password-container">
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Tu contraseña" required>
-                    <button type="button" class="toggle-password" id="togglePassword">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
-        </form>
+    @if ($errors->any())
+    <div class="error-box">
+        <i class="fas fa-circle-exclamation"></i>
+        <span>{{ $errors->first() }}</span>
+    </div>
+    @endif
+
+
+    <div class="form-group">
+        <label for="email">Correo Electrónico</label>
+        <input type="text" id="email" name="email" class="form-control"
+            placeholder="usuario o tu.correo@ejemplo.com" value="{{ old('email') }}" required>
+    </div>
+
+    <div class="form-group">
+        <label for="password">Contraseña</label>
+        <div class="password-container">
+            <input type="password" id="password" name="password" class="form-control" placeholder="Tu contraseña" required>
+            <button type="button" class="toggle-password" id="togglePassword">
+                <i class="fas fa-eye"></i>
+            </button>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+</form>
+
         
         <div class="auth-switch">
             ¿No tienes cuenta? <a href="{{ route('signup') }}" class="auth-link">Regístrate aquí</a>

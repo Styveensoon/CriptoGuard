@@ -163,3 +163,19 @@
         .auth-link:hover {
             color: #ff3399;
         }
+        .error-box {
+        background: #ff3b3b;
+        color: white;
+        padding: 12px 15px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        box-shadow: 0 3px 8px rgba(255, 0, 0, 0.3);
+        }
+
+        .error-box i {
+            font-size: 18px;
+        }
