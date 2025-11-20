@@ -1,15 +1,23 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
-Route::get('/signup', function () {
-    return view('credentials.signup');
-})->name('signup');
 
-Route::get('/login', function () {
-    return view('credentials.login');
-})->name('login');
+// Rutas de autenticación
+Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');
+Route::post('/signup', [AuthController::class, 'signup'])->name('signup.post');
+
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Ruta del dashboard (protegida)
+Route::get('/dashboard', function () {
+    return view('app.init');
+})->middleware('auth')->name('dashboard');

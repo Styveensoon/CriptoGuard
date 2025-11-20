@@ -12,23 +12,21 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
+        'paterno',
+        'materno',
+        'birthdate',
+        'sex',
+        'username',
+        'company',
+        'role',
+        'experience',
+        'specialty',
         'email',
         'password',
-        'empresa_id',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
     ];
-
-    public function empresa()
-    {
-        return $this->belongsTo(Empresa::class);
-    }
-
-    public function roles()
-    {
-        return $this->belongsToMany(Rol::class, 'role_user');
-    }
 }
