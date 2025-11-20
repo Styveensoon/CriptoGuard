@@ -3,22 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Articulo extends Model
 {
-    protected $table = 'articulos';
-    protected $primaryKey = 'id_articulo';
+    use HasFactory;
 
     protected $fillable = [
-        'titulo', 'contenido', 'fecha_publicacion', 'autor',
-        'categoria', 'fuente', 'url', 'firma'
+        'titulo',
+        'contenido',
+        'categoria',
+        'autor_id',
     ];
 
-    public function usuario() {
-        return $this->belongsTo(User::class, 'autor');
-    }
-
-    public function incidente() {
-        return $this->hasOne(Incidente::class, 'id_articulo');
+    public function autor()
+    {
+        return $this->belongsTo(User::class, 'autor_id');
     }
 }

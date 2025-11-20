@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void {
         Schema::create('empresas', function (Blueprint $table) {
-            $table->id('id_empresa');
+            $table->id(); // id
             $table->string('nombre');
-            $table->string('pais');
+            $table->string('pais')->nullable();
             $table->string('area_especializacion')->nullable();
             $table->string('sitio_web')->nullable();
             $table->timestamps();

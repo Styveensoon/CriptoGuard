@@ -3,22 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Vulnerabilidad extends Model
 {
-    protected $table = 'vulnerabilidades';
-    protected $primaryKey = 'id_vulnerabilidad';
+    use HasFactory;
 
     protected $fillable = [
-        'cve_id', 'severidad', 'descripcion',
-        'fecha_reporte', 'empresa_afectada'
+        'codigo',
+        'descripcion',
+        'nivel_riesgo',
     ];
 
-    public function empresa() {
-        return $this->belongsTo(Empresa::class, 'empresa_afectada');
-    }
-
-    public function alertas() {
-        return $this->hasMany(Alerta::class, 'id_vulnerabilidad');
+    public function incidentes()
+    {
+        return $this->belongsToMany(Incidente::class, 'incidente_vulnerabilidad');
     }
 }
