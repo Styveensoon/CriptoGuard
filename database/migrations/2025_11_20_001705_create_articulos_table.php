@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('categoria')->nullable();
             $table->string('fuente')->nullable();
             $table->string('url')->nullable();
-            $table->string('firma')->nullable();
+            $table->longText('firma')->nullable();
             $table->timestamps();
         });
     }
