@@ -18,7 +18,8 @@ class Articulo extends Model
         'autor_id',
         'fuente',
         'url',
-        'firma'
+        'firma',
+        'fecha_publicacion'
     ];
 
     protected static function booted()

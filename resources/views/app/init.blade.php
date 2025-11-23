@@ -1,56 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>cryptoguard</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cripto Guard - Inicio</title>
+    <link rel="stylesheet" href="{{ asset('css/cite/style_init.css') }}">
+    <link rel="icon" href="{{ asset('resources/bicho.png') }}">
 </head>
 <body>
-    <form action="{{ route('logout') }}" method="POST">
-    @csrf
-    <button type="submit" class="btn-logout">
-        Cerrar Sesión
-    </button>
-</form>
-<style>
-.btn-logout {
-    background: #e74c3c;
-    color: white;
-    padding: 10px 18px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-}
 
-.btn-logout:hover {
-    background: #c0392b;
-}
-</style>
-<h2>Crear Artículo</h2>
+    <nav>
+        <div class="brand">
+            <div class="shield"></div>
+            <span>Cripto Guard</span>
+        </div>
 
-<form action="{{ route('articulos.store') }}" method="POST">
-    @csrf
+        <!-- Inicial del usuario -->
+        <a href="{{ route('profile') }}" class="profile">
+            {{ strtoupper(substr(auth()->user()->name,0,1)) }}
+        </a>
+    </nav>
 
-    <label>Título</label>
-    <input type="text" name="titulo" required>
+    <div class="search-container">
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search" placeholder="Buscar alertas, artículos, categorías..." />
+        </div>
+    </div>
 
-    <label>Contenido</label>
-    <textarea name="contenido"></textarea>
+    <div class="cards" id="cardsContainer">
+        @foreach ($posts as $post)
+            <div class="card" data-filter="{{ strtolower($post->titulo . ' ' . $post->contenido . ' ' . $post->categoria . ' ' . $post->fuente) }}">
+                <h3>{{ $post->titulo }}</h3>
+                <p class="card-content">{{ $post->contenido }}</p>
+                <div class="card-meta">
+                    <div class="meta-item"><strong>Fuente:</strong> {{ $post->fuente }}</div>
+                    <div class="meta-item"><strong>Categoría:</strong> {{ $post->categoria }}</div>
+                    <div class="meta-item"><strong>Fecha:</strong> {{ $post->fecha_publicacion }}</div>
+                </div>
+                <a href="{{ $post->url }}" target="_blank">Leer más</a>
+            </div>
+        @endforeach
+    </div>
 
-    <label>Categoría</label>
-    <input type="text" name="categoria">
+    <script>
+        const searchInput = document.getElementById("search");
+        const cards = document.querySelectorAll('.card');
 
-    <label>Fuente</label>
-    <input type="text" name="fuente">
+        searchInput.addEventListener("input", () => {
+            const q = searchInput.value.toLowerCase();
 
-    <label>URL</label>
-    <input type="text" name="url">
-
-    <button type="submit">Crear</button>
-</form>
-
+            cards.forEach(card => {
+                // Cambiamos aquí: ahora buscamos en el título (h3) en lugar de en data-filter
+                const titulo = card.querySelector('h3').textContent.toLowerCase();
+                card.style.display = titulo.includes(q) ? 'block' : 'none';
+            });
+        });
+    </script>
 
 </body>
 </html>

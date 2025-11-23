@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
 
-            // 🔥 Campos agregados
+            //camppos de usuario
             $table->string('paterno')->nullable();
             $table->string('materno')->nullable();
             $table->date('birthdate')->nullable();

@@ -10,7 +10,7 @@
             padding: 0;
             background: #1a0933;
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            color: #e2e8f0;
+            color: #ffffff !important;
         }
 
         .email-wrapper {
@@ -21,12 +21,13 @@
             overflow: hidden;
             padding: 30px;
             box-shadow: 0 0 30px rgba(0,0,0,0.4);
+            color: #ffffff !important;
         }
 
         .header {
             text-align: center;
             padding: 20px;
-            color: #34bb44;
+            color: #ffffff !important;
             font-size: 28px;
             font-weight: bold;
         }
@@ -35,13 +36,14 @@
             text-align: center;
             font-size: 16px;
             margin-top: -10px;
-            color: #ff0080;
+            color: #ffffff !important;
         }
 
         .content {
             margin-top: 25px;
             font-size: 16px;
             line-height: 1.7;
+            color: #ffffff !important;
         }
 
         .welcome-box {
@@ -50,6 +52,7 @@
             border-left: 4px solid #34bb44;
             border-radius: 10px;
             margin: 20px 0;
+            color: #ffffff !important;
         }
 
         .button {
@@ -57,7 +60,7 @@
             margin-top: 25px;
             padding: 14px 28px;
             background: #34bb44;
-            color: #1a0933;
+            color: #1a0933 !important;
             text-decoration: none;
             font-weight: bold;
             border-radius: 50px;
@@ -73,11 +76,11 @@
             text-align: center;
             margin-top: 40px;
             font-size: 13px;
-            color: #8b75a4;
+            color: #ffffff !important;
         }
 
         .accent {
-            color: #ff0080;
+            color: #ffffff !important;
             font-weight: bold;
         }
 
@@ -89,7 +92,7 @@
     </style>
 </head>
 
-<body>
+<body style="color:#ffffff !important;">
 
 <div class="email-wrapper">
 
@@ -99,7 +102,7 @@
     <div class="content">
         Hola <span class="accent">{{ $user->name }}</span>,<br><br>
 
-        Gracias por registrarte en <strong>Cryto Guard</strong>.  
+        Gracias por registrarte en <strong style="color:#ffffff !important;">Cryto Guard</strong>.  
         Estamos emocionados de que formes parte de nuestra comunidad dedicada a crear un entorno digital más seguro.
 
         <div class="welcome-box">
@@ -118,7 +121,7 @@
         <br><br>
 
         Si necesitas ayuda, estamos aquí para ti.  
-        Bienvenido nuevamente, <strong>es un placer tenerte con nosotros.</strong>
+        Bienvenido nuevamente, <strong style="color:#ffffff !important;">es un placer tenerte con nosotros.</strong>
     </div>
 
     <div class="footer">

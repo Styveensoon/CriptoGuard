@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Articulo;
 use Illuminate\Http\Request;
-use Firebase\JWT\JWT;
 
 class MakePostController extends Controller
 {
@@ -17,7 +16,6 @@ class MakePostController extends Controller
     {
         $user = auth()->user();
 
-        // Validación rápida
         $request->validate([
             'titulo' => 'required|string|max:255',
             'contenido' => 'nullable|string',
@@ -26,8 +24,7 @@ class MakePostController extends Controller
             'url' => 'nullable|string|max:255',
         ]);
 
-        // Crear artículo sin firma aún
-        $articulo = Articulo::create([
+        Articulo::create([
             'titulo' => $request->titulo,
             'contenido' => $request->contenido,
             'categoria' => $request->categoria,
@@ -37,21 +34,7 @@ class MakePostController extends Controller
             'fecha_publicacion' => now(),
         ]);
 
-        // Crear firma JWT
-        $payload = [
-            'user_id' => $user->id,
-            'user_email' => $user->email,
-            'user_name' => $user->name,
-            'articulo_id' => $articulo->id,
-            'created_at' => now()->toDateTimeString(),
-        ];
 
-        $jwt = JWT::encode($payload, env('JWT_SECRET'), 'HS256');
-
-        // Guardar firma
-        $articulo->firma = $jwt;
-        $articulo->save();
-
-        return redirect()->route('dashboard')->with('success', 'Artículo creado correctamente');
+        return redirect()->route('profile')->with('success', 'Artículo creado correctamente');
     }
 }
